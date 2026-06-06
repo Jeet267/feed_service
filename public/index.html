@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hyperlocal Feed</title>
+  <meta name="description" content="What's happening within a few km of you: local news, jobs, events and alerts." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot" aria-hidden="true"></span>
+      <div>
+        <h1>Hyperlocal Feed</h1>
+        <p class="sub">What's happening within a few km of you</p>
+      </div>
+    </div>
+    <button id="newPostBtn" class="btn primary">+ New post</button>
+  </header>
+
+  <section class="controls" aria-label="Feed filters">
+    <label class="field">
+      <span>Area</span>
+      <select id="areaSelect"></select>
+    </label>
+    <button id="locateBtn" class="btn ghost" title="Use my current location">📍 Use my location</button>
+    <label class="field">
+      <span>Radius</span>
+      <select id="radiusSelect">
+        <option value="1">1 km</option>
+        <option value="2">2 km</option>
+        <option value="5" selected>5 km</option>
+        <option value="10">10 km</option>
+        <option value="25">25 km</option>
+      </select>
+    </label>
+    <div class="chips" id="categoryChips" role="group" aria-label="Category"></div>
+  </section>
+
+  <main class="layout">
+    <section class="feed-panel">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="nearby" role="tab" aria-selected="true">Nearby</button>
+        <button class="tab" data-tab="trending" role="tab" aria-selected="false">Trending</button>
+        <span id="meta" class="meta"></span>
+      </div>
+      <ul id="feed" class="feed" aria-live="polite"></ul>
+      <div id="empty" class="empty hidden">No posts here yet. Try a bigger radius or another area.</div>
+      <button id="loadMore" class="btn ghost full hidden">Load more</button>
+    </section>
+
+    <aside class="map-panel">
+      <div id="map" aria-label="Map of posts"></div>
+      <p class="hint">Tip: click anywhere on the map to see that spot's feed.</p>
+      <div class="stats" id="stats"></div>
+    </aside>
+  </main>
+
+  <dialog id="postDialog">
+    <form id="postForm" method="dialog">
+      <h2>New post</h2>
+      <p class="sub" id="postWhere"></p>
+      <label class="field block"><span>Title</span>
+        <input name="title" required minlength="3" maxlength="120" placeholder="e.g. Power cut 10am-2pm" />
+      </label>
+      <label class="field block"><span>Details</span>
+        <textarea name="body" required maxlength="2000" rows="4" placeholder="What should neighbours know?"></textarea>
+      </label>
+      <label class="field block"><span>Category</span>
+        <select name="category" id="postCategory"></select>
+      </label>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="cancelPost">Cancel</button>
+        <button type="submit" class="btn primary">Post</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+
+  <footer class="footer">
+    Node.js · Express · MongoDB 2dsphere · Redis · <a href="/health" target="_blank" rel="noopener">health</a> · <a href="/api/v1/stats/cache" target="_blank" rel="noopener">cache stats</a>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <!-- Optional: set window.API_BASE in config.js if the API lives on another domain -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
